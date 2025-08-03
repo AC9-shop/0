@@ -11,6 +11,12 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
+    <!-- Firebase CDN scripts (v8) -->
+    <!-- These scripts expose a global `firebase` object, which is compatible with the Babel setup -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
         /* Custom styles for animations, fonts, and layout */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -36,20 +42,28 @@
         html {
             scroll-behavior: smooth;
         }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="bg-white text-gray-800 min-h-screen">
     <div id="root"></div>
 
     <script type="text/babel">
-        // The main App component from your provided code
+        
+        // The main App component
         function App() {
           const [language, setLanguage] = React.useState('en');
           const content = {
             en: {
               brandName: "AC9",
               tagline: "Creativity, Culture, Pride.",
-              navbar: { home: "Home", shop: "Shop", about: "About", contact: "Contact" },
+              navbar: { home: "Home", shop: "Shop", about: "About", contact: "Contact", chat: "Chat" },
               sections: {
                 hero: {
                   title: "Designs that tell your story.",
@@ -76,6 +90,12 @@
                   emailLabel: "Your Email",
                   messageLabel: "Your Message",
                   sendButton: "Send Message"
+                },
+                chat: {
+                    title: "Live Public Chat",
+                    subtitle: "Connect with the community in real time. Your user ID is shown below.",
+                    messagePlaceholder: "Type your message here...",
+                    sendButton: "Send"
                 }
               },
               productData: [
@@ -93,7 +113,7 @@
             fr: {
               brandName: "AC9",
               tagline: "Créativité, Culture, Fierté.",
-              navbar: { home: "Accueil", shop: "Boutique", about: "À Propos", contact: "Contact" },
+              navbar: { home: "Accueil", shop: "Boutique", about: "À Propos", contact: "Contact", chat: "Chat" },
               sections: {
                 hero: {
                   title: "Des designs qui racontent votre histoire.",
@@ -120,6 +140,12 @@
                   emailLabel: "Votre E-mail",
                   messageLabel: "Votre Message",
                   sendButton: "Envoyer le Message"
+                },
+                chat: {
+                    title: "Chat Public en Direct",
+                    subtitle: "Connectez-vous avec la communauté en temps réel. Votre ID utilisateur est affiché ci-dessous.",
+                    messagePlaceholder: "Tapez votre message ici...",
+                    sendButton: "Envoyer"
                 }
               },
               productData: [
@@ -137,7 +163,7 @@
             ar: {
               brandName: "AC9",
               tagline: "إبداع، ثقافة، فخر.",
-              navbar: { home: "الرئيسية", shop: "المتجر", about: "حول العلامة", contact: "اتصل بنا" },
+              navbar: { home: "الرئيسية", shop: "المتجر", about: "حول العلامة", contact: "اتصل بنا", chat: "الدردشة" },
               sections: {
                 hero: {
                   title: "تصاميم تحكي قصتك.",
@@ -164,6 +190,12 @@
                   emailLabel: "بريدك الإلكتروني",
                   messageLabel: "رسالتك",
                   sendButton: "أرسل الرسالة"
+                },
+                chat: {
+                    title: "دردشة عامة مباشرة",
+                    subtitle: "تواصل مع المجتمع في الوقت الفعلي. معرف المستخدم الخاص بك معروض أدناه.",
+                    messagePlaceholder: "اكتب رسالتك هنا...",
+                    sendButton: "إرسال"
                 }
               },
               productData: [
@@ -185,7 +217,7 @@
           const scrollToSection = (id) => {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
           };
-          
+        
           const ProductCard = ({ product }) => {
             return (
               <div className="bg-white rounded-xl shadow-lg group overflow-hidden transition-all duration-300 transform hover:scale-105 border border-gray-200">
@@ -235,6 +267,7 @@
                     <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('shop-section')}>{content[language].navbar.shop}</button>
                     <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('about-section')}>{content[language].navbar.about}</button>
                     <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('contact-section')}>{content[language].navbar.contact}</button>
+                    <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('chat-section')}>{content[language].navbar.chat}</button>
                   </nav>
                   <div className="hidden md:flex ml-8 space-x-2">
                     <button onClick={() => setLanguage('en')} className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${language === 'en' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>EN</button>
@@ -310,18 +343,22 @@
                     <h2 className="text-3xl md:text-5xl font-bold text-red-500 mb-4">{title}</h2>
                     <p className="text-xl text-gray-600">{subtitle}</p>
                   </div>
-                  <form className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-xl border border-gray-200">
+                  <form 
+                    className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-xl border border-gray-200"
+                    action="https://formspree.io/f/yourformid"
+                    method="POST"
+                  >
                     <div className="mb-6">
                       <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">{nameLabel}</label>
-                      <input type="text" id="name" name="name" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" />
+                      <input type="text" id="name" name="name" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" required />
                     </div>
                     <div className="mb-6">
                       <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">{emailLabel}</label>
-                      <input type="email" id="email" name="email" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" />
+                      <input type="email" id="email" name="_replyto" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" required />
                     </div>
                     <div className="mb-6">
                       <label htmlFor="message" className="block text-gray-700 font-semibold mb-2">{messageLabel}</label>
-                      <textarea id="message" name="message" rows="5" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"></textarea>
+                      <textarea id="message" name="message" rows="5" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" required></textarea>
                     </div>
                     <button
                       type="submit"
@@ -334,7 +371,154 @@
               </section>
             );
           };
-          
+        
+          // New ChatSection component using Firestore for real-time chat
+          const ChatSection = () => {
+            const [messages, setMessages] = React.useState([]);
+            const [newMessage, setNewMessage] = React.useState('');
+            const [db, setDb] = React.useState(null);
+            const [auth, setAuth] = React.useState(null);
+            const [userId, setUserId] = React.useState(null);
+            const chatMessagesRef = React.useRef(null);
+        
+            // Initialize Firebase and Auth
+            React.useEffect(() => {
+                const initializeFirebase = async () => {
+                    try {
+                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                        const app = firebase.initializeApp(firebaseConfig);
+                        const firestore = app.firestore();
+                        const firebaseAuth = app.auth();
+                        
+                        setDb(firestore);
+                        setAuth(firebaseAuth);
+
+                        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                        
+                        if (initialAuthToken) {
+                             // Use v8 syntax for sign-in
+                            await firebaseAuth.signInWithCustomToken(initialAuthToken);
+                        } else {
+                             // Use v8 syntax for sign-in
+                            await firebaseAuth.signInAnonymously();
+                        }
+
+                        // Use v8 syntax for auth state change listener
+                        firebaseAuth.onAuthStateChanged((user) => {
+                            if (user) {
+                                setUserId(user.uid);
+                            } else {
+                                setUserId(null);
+                            }
+                        });
+                    } catch (error) {
+                        console.error("Firebase initialization failed:", error);
+                    }
+                };
+                initializeFirebase();
+            }, []);
+        
+            // Listen for real-time chat messages
+            React.useEffect(() => {
+                if (!db || !userId) return;
+
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const chatCollectionPath = `artifacts/${appId}/public/data/messages`;
+        
+                // Use v8 onSnapshot method on the collection reference directly
+                const unsubscribe = db.collection(chatCollectionPath).onSnapshot(snapshot => {
+                    let newMessages = [];
+                    snapshot.forEach(doc => {
+                        newMessages.push({ id: doc.id, ...doc.data() });
+                    });
+                    // Sort messages by timestamp after fetching to ensure correct order
+                    newMessages.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
+                    setMessages(newMessages);
+                });
+        
+                return () => unsubscribe();
+            }, [db, userId]);
+
+            // Scroll to the latest message whenever messages update
+            React.useEffect(() => {
+                if (chatMessagesRef.current) {
+                    chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+                }
+            }, [messages]);
+        
+            // Handle sending a new message
+            const handleSendMessage = async (e) => {
+                e.preventDefault();
+                if (newMessage.trim() === '' || !db || !userId) return;
+        
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    const chatCollectionPath = `artifacts/${appId}/public/data/messages`;
+                    // Use v8 add method
+                    await db.collection(chatCollectionPath).add({
+                        userId: userId,
+                        text: newMessage,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    setNewMessage('');
+                } catch (error) {
+                    console.error("Error sending message: ", error);
+                }
+            };
+        
+            const { title, subtitle, messagePlaceholder, sendButton } = content[language].sections.chat;
+        
+            return (
+                <section id="chat-section" className="py-24 bg-gray-100 text-gray-800 font-sans" dir={dir}>
+                    <div className="container mx-auto px-4 max-w-2xl">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-5xl font-bold text-red-500 mb-4">{title}</h2>
+                            <p className="text-xl text-gray-600 mb-4">{subtitle}</p>
+                            {userId && (
+                                <p className="text-sm text-gray-500 p-2 bg-white rounded-lg inline-block break-all">
+                                    <span className="font-semibold">{dir === 'rtl' ? "معرف المستخدم:" : "Your User ID:"}</span> {userId}
+                                </p>
+                            )}
+                        </div>
+                        <div className="bg-white p-6 md:p-8 rounded-xl shadow-xl flex flex-col h-[500px]">
+                            {/* Message display area */}
+                            <div 
+                                className="flex-grow overflow-y-auto space-y-4 pr-2 scrollbar-hide"
+                                ref={chatMessagesRef}
+                            >
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`p-4 rounded-lg shadow-sm ${msg.userId === userId ? 'bg-red-100 ml-auto' : 'bg-gray-100'}`} style={{ maxWidth: '85%' }}>
+                                        <p className="text-xs text-gray-500 font-medium mb-1 break-all">
+                                            {msg.userId === userId ? (dir === 'rtl' ? "أنت" : "You") : msg.userId}
+                                        </p>
+                                        <p className="text-base text-gray-800">{msg.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+        
+                            {/* Message input form */}
+                            <form onSubmit={handleSendMessage} className="mt-6 flex gap-2">
+                                <input
+                                    type="text"
+                                    value={newMessage}
+                                    onChange={(e) => setNewMessage(e.target.value)}
+                                    placeholder={messagePlaceholder}
+                                    className="flex-grow px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"
+                                />
+                                <button
+                                    type="submit"
+                                    className="bg-gray-900 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
+                                >
+                                    {sendButton}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            );
+          };
+        
           const Footer = () => {
             return (
               <footer className="bg-gray-900 text-gray-400 font-sans" dir={dir}>
@@ -364,6 +548,7 @@
                 <AboutSection />
                 <ShopSection />
                 <ContactSection />
+                <ChatSection />
               </main>
               <Footer />
             </div>
