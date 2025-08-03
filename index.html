@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AC9 - Creativity, Culture, Pride.</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM CDNs -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* Custom styles for animations, fonts, and layout */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom animation for fade-in effect */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-down {
+            animation: fadeInDown 1s ease-out;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // The main App component from your provided code
+        function App() {
+          const [language, setLanguage] = React.useState('en');
+          const content = {
+            en: {
+              brandName: "AC9",
+              tagline: "Creativity, Culture, Pride.",
+              navbar: { home: "Home", shop: "Shop", about: "About", contact: "Contact" },
+              sections: {
+                hero: {
+                  title: "Designs that tell your story.",
+                  subtitle: "Discover modern Moroccan creations crafted with purpose.",
+                  buttonText: "Explore Collections"
+                },
+                about: {
+                  title: "Our Story: A Moroccan Identity",
+                  paragraph1: "AC9 is a modern Moroccan fashion and lifestyle brand dedicated to designing and offering unique, creative, and personalized products. We believe fashion should be a reflection of identity, meaning, and cultural pride, not just fleeting trends.",
+                  paragraph2: "Our mission is to empower individuals to express themselves through design. Each product is created with purpose—celebrating personal stories, emotions, and moments. Whether it's a birthday design, a motivational message, or a symbol of heritage, every piece is meant to be worn, gifted, or used with pride.",
+                  paragraph3: "Rooted in Moroccan creativity but reaching globally, AC9 combines minimalist aesthetics with deep meaning, offering designs that are both beautiful and thought-provoking. We appeal to a young, expressive audience—dreamers, artists, and creators who want their style to say something real."
+                },
+                shop: {
+                  title: "Our Collections",
+                  subtitle: "Explore our full range of customizable t-shirts, mugs, and caps.",
+                  tshirts: "T-Shirts", mugs: "Mugs", caps: "Caps",
+                  addToCart: "Add to Cart",
+                  viewAll: "View All Products"
+                },
+                contact: {
+                  title: "Get in Touch",
+                  subtitle: "We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.",
+                  nameLabel: "Your Name",
+                  emailLabel: "Your Email",
+                  messageLabel: "Your Message",
+                  sendButton: "Send Message"
+                }
+              },
+              productData: [
+                { id: 1, name: "Moroccan Zellige T-Shirt", price: "250 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Zellige+Tee" },
+                { id: 2, name: "Desert Sunset Mug", price: "120 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Sunset+Mug" },
+                { id: 3, name: "Atlas Mountains Cap", price: "180 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Atlas+Cap" },
+                { id: 4, name: "Calligraphy T-Shirt", price: "280 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/333/EEE?text=Calligraphy+Tee" },
+                { id: 5, name: "Abstract Pattern Mug", price: "110 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/222/FFF?text=Pattern+Mug" },
+                { id: 6, name: "AC9 Classic Logo Cap", price: "160 DH", category: "caps", imageUrl: "https://placehold.co/400x400/333/EEE?text=Classic+Cap" },
+                { id: 7, name: "Sahara Dunes T-Shirt", price: "260 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Sahara+Tee" },
+                { id: 8, name: "Casablanca Mug", price: "130 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Casablanca+Mug" },
+                { id: 9, name: "Tagine Cap", price: "170 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Tagine+Cap" },
+              ],
+            },
+            fr: {
+              brandName: "AC9",
+              tagline: "Créativité, Culture, Fierté.",
+              navbar: { home: "Accueil", shop: "Boutique", about: "À Propos", contact: "Contact" },
+              sections: {
+                hero: {
+                  title: "Des designs qui racontent votre histoire.",
+                  subtitle: "Découvrez des créations marocaines modernes conçues avec un but.",
+                  buttonText: "Explorer les Collections"
+                },
+                about: {
+                  title: "Notre Histoire : Une Identité Marocaine",
+                  paragraph1: "AC9 est une marque de mode et de style de vie marocaine moderne dédiée à la conception et à l'offre de produits uniques, créatifs et personnalisés. Nous pensons que la mode doit être le reflet de l'identité, du sens et de la fierté culturelle, et pas seulement des tendances éphémères.",
+                  paragraph2: "Notre mission est de donner aux individus les moyens de s'exprimer par le design. Chaque produit est créé avec un but, célébrant les histoires personnelles, les émotions et les moments. Qu'il s'agisse d'un design pour un anniversaire, d'un message de motivation ou d'un symbole de patrimoine, chaque pièce est destinée à être portée, offerte ou utilisée avec fierté.",
+                  paragraph3: "Enracinée dans la créativité marocaine mais avec une portée mondiale, AC9 combine une esthétique minimaliste avec un sens profond, offrant des designs à la fois beaux et stimulants. Nous nous adressons à un public jeune et expressif — des rêveurs, des artistes et des créateurs qui veulent que leur style dise quelque chose de vrai."
+                },
+                shop: {
+                  title: "Nos Collections",
+                  subtitle: "Découvrez notre gamme complète de t-shirts, mugs et casquettes personnalisables.",
+                  tshirts: "T-Shirts", mugs: "Mugs", caps: "Casquettes",
+                  addToCart: "Ajouter au Panier",
+                  viewAll: "Voir Tous les Produits"
+                },
+                contact: {
+                  title: "Contactez-nous",
+                  subtitle: "Nous serions ravis de vous entendre. Envoyez-nous un message et nous vous répondrons dès que possible.",
+                  nameLabel: "Votre Nom",
+                  emailLabel: "Votre E-mail",
+                  messageLabel: "Votre Message",
+                  sendButton: "Envoyer le Message"
+                }
+              },
+              productData: [
+                { id: 1, name: "T-Shirt Zellige Marocain", price: "250 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Tee+Zellige" },
+                { id: 2, name: "Mug Coucher de Soleil du Désert", price: "120 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Mug+Soleil" },
+                { id: 3, name: "Casquette Montagnes de l'Atlas", price: "180 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Casquette+Atlas" },
+                { id: 4, name: "T-Shirt Calligraphie", price: "280 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/333/EEE?text=Tee+Calligraphie" },
+                { id: 5, name: "Mug Motif Abstrait", price: "110 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/222/FFF?text=Mug+Motif" },
+                { id: 6, name: "Casquette Logo Classique AC9", price: "160 DH", category: "caps", imageUrl: "https://placehold.co/400x400/333/EEE?text=Casquette+AC9" },
+                { id: 7, name: "T-Shirt Dunes du Sahara", price: "260 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Tee+Sahara" },
+                { id: 8, name: "Mug Casablanca", price: "130 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Mug+Casablanca" },
+                { id: 9, name: "Casquette Tagine", price: "170 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Casquette+Tagine" },
+              ],
+            },
+            ar: {
+              brandName: "AC9",
+              tagline: "إبداع، ثقافة، فخر.",
+              navbar: { home: "الرئيسية", shop: "المتجر", about: "حول العلامة", contact: "اتصل بنا" },
+              sections: {
+                hero: {
+                  title: "تصاميم تحكي قصتك.",
+                  subtitle: "اكتشف إبداعات مغربية عصرية مصنوعة بهدف.",
+                  buttonText: "استكشف المجموعات"
+                },
+                about: {
+                  title: "قصتنا: هوية مغربية",
+                  paragraph1: "AC9 هي علامة تجارية مغربية عصرية للأزياء ونمط الحياة مكرسة لتصميم وتقديم منتجات فريدة، إبداعية، وشخصية. نحن نؤمن بأن الموضة يجب أن تكون انعكاسًا للهوية، المعنى، والفخر الثقافي، وليس فقط اتجاهات عابرة.",
+                  paragraph2: "مهمتنا هي تمكين الأفراد من التعبير عن أنفسهم من خلال التصميم. كل منتج يُصمم بهدف، يحتفي بالقصص الشخصية، العواطف، واللحظات. سواء كان تصميمًا لعيد ميلاد، رسالة تحفيزية، أو رمزًا للتراث، كل قطعة مصممة لكي تُلبس، تُهدى، أو تُستخدم بكل فخر.",
+                  paragraph3: "متجذرة في الإبداع المغربي ولكنها تصل إلى العالمية، تجمع AC9 بين الجماليات البسيطة والمعاني العميقة، وتقدم تصاميم جميلة ومثيرة للتفكير في نفس الوقت. نحن نجذب جمهورًا شابًا ومعبرًا — حالمين، فنانين، ومبدعين يريدون أن يقول أسلوبهم شيئًا حقيقيًا."
+                },
+                shop: {
+                  title: "مجموعاتنا",
+                  subtitle: "اكتشف مجموعتنا الكاملة من التي شيرتات، الأكواب، والقبعات القابلة للتخصيص.",
+                  tshirts: "تي شيرتات", mugs: "أكواب", caps: "قبعات",
+                  addToCart: "أضف إلى السلة",
+                  viewAll: "عرض جميع المنتجات"
+                },
+                contact: {
+                  title: "تواصل معنا",
+                  subtitle: "نحن نحب أن نسمع منك. أرسل لنا رسالة وسنعاود الاتصال بك في أقرب وقت ممكن.",
+                  nameLabel: "اسمك",
+                  emailLabel: "بريدك الإلكتروني",
+                  messageLabel: "رسالتك",
+                  sendButton: "أرسل الرسالة"
+                }
+              },
+              productData: [
+                { id: 1, name: "تي شيرت زليج مغربي", price: "250 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Tee+Zellige" },
+                { id: 2, name: "كوب غروب الصحراء", price: "120 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Mug+Soleil" },
+                { id: 3, name: "قبعة جبال الأطلس", price: "180 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Casquette+Atlas" },
+                { id: 4, name: "تي شيرت الخط العربي", price: "280 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/333/EEE?text=Tee+Calligraphie" },
+                { id: 5, name: "كوب بنمط تجريدي", price: "110 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/222/FFF?text=Mug+Motif" },
+                { id: 6, name: "قبعة بشعار AC9 الكلاسيكي", price: "160 DH", category: "caps", imageUrl: "https://placehold.co/400x400/333/EEE?text=Casquette+AC9" },
+                { id: 7, name: "تي شيرت كثبان الصحراء", price: "260 DH", category: "t-shirts", imageUrl: "https://placehold.co/400x400/222/FFF?text=Tee+Sahara" },
+                { id: 8, name: "كوب الدار البيضاء", price: "130 DH", category: "mugs", imageUrl: "https://placehold.co/400x400/333/EEE?text=Mug+Casablanca" },
+                { id: 9, name: "قبعة طاجين", price: "170 DH", category: "caps", imageUrl: "https://placehold.co/400x400/222/FFF?text=Casquette+Tagine" },
+              ],
+            },
+          };
+        
+          const dir = language === 'ar' ? 'rtl' : 'ltr';
+        
+          const scrollToSection = (id) => {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+          };
+          
+          const ProductCard = ({ product }) => {
+            return (
+              <div className="bg-white rounded-xl shadow-lg group overflow-hidden transition-all duration-300 transform hover:scale-105 border border-gray-200">
+                <div className="relative">
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x400/222/FFF?text=Product'; }}
+                  />
+                </div>
+                <div className="p-4 md:p-6 text-center">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">{product.name}</h3>
+                  <p className="text-lg text-red-500 font-semibold mb-4">{product.price}</p>
+                  <button
+                    className="w-full px-6 py-3 text-sm md:text-base font-semibold text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors duration-300"
+                    onClick={() => console.log('Added to cart:', product)}
+                  >
+                    {content[language].sections.shop.addToCart}
+                  </button>
+                </div>
+              </div>
+            );
+          };
+        
+          const Header = () => {
+            return (
+              <header className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-xl text-gray-800 font-sans" dir={dir}>
+                <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+                  <div className="flex justify-between items-center w-full md:w-auto mb-4 md:mb-0">
+                    <h1
+                      className="text-3xl font-extrabold text-gray-900 cursor-pointer transition-colors hover:text-red-500"
+                      onClick={() => scrollToSection('hero-section')}
+                    >
+                      {content[language].brandName}
+                    </h1>
+                    <div className="md:hidden flex space-x-2">
+                      <button onClick={() => setLanguage('en')} className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${language === 'en' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>EN</button>
+                      <button onClick={() => setLanguage('fr')} className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${language === 'fr' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>FR</button>
+                      <button onClick={() => setLanguage('ar')} className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${language === 'ar' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>AR</button>
+                    </div>
+                  </div>
+        
+                  <nav className="flex-grow flex flex-col md:flex-row items-center justify-center md:justify-end space-y-2 md:space-y-0 md:space-x-8 text-gray-600">
+                    <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('hero-section')}>{content[language].navbar.home}</button>
+                    <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('shop-section')}>{content[language].navbar.shop}</button>
+                    <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('about-section')}>{content[language].navbar.about}</button>
+                    <button className="text-lg font-medium hover:text-red-500 transition-colors" onClick={() => scrollToSection('contact-section')}>{content[language].navbar.contact}</button>
+                  </nav>
+                  <div className="hidden md:flex ml-8 space-x-2">
+                    <button onClick={() => setLanguage('en')} className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${language === 'en' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>EN</button>
+                    <button onClick={() => setLanguage('fr')} className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${language === 'fr' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>FR</button>
+                    <button onClick={() => setLanguage('ar')} className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${language === 'ar' ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-gray-900'}`}>AR</button>
+                  </div>
+                </div>
+              </header>
+            );
+          };
+        
+          const HeroSection = () => {
+            return (
+              <section id="hero-section" className="relative bg-gray-900 text-white min-h-screen flex items-center justify-center pt-24 md:pt-0 font-sans" dir={dir}>
+                <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
+                  <h2 className="text-4xl md:text-7xl font-extrabold text-white leading-tight mb-4 animate-fade-in-down">{content[language].sections.hero.title}</h2>
+                  <p className="text-lg md:text-xl text-gray-400 mb-8 animate-fade-in-up">{content[language].sections.hero.subtitle}</p>
+                  <button
+                    className="bg-red-500 text-white font-bold text-lg px-8 py-3 rounded-lg shadow-lg hover:bg-red-600 transition-colors duration-300 transform hover:scale-105"
+                    onClick={() => scrollToSection('shop-section')}
+                  >
+                    {content[language].sections.hero.buttonText}
+                  </button>
+                </div>
+              </section>
+            );
+          };
+        
+          const AboutSection = () => {
+            const { title, paragraph1, paragraph2, paragraph3 } = content[language].sections.about;
+            return (
+              <section id="about-section" className="py-24 bg-white text-gray-800 font-sans" dir={dir}>
+                <div className="container mx-auto px-4 max-w-5xl">
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl md:text-5xl font-bold text-red-500 mb-4">{title}</h2>
+                    <p className="text-xl text-gray-600 font-semibold">{content[language].tagline}</p>
+                  </div>
+                  <div className={`space-y-8 text-lg text-gray-700 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                    <p className="leading-relaxed">{paragraph1}</p>
+                    <p className="leading-relaxed">{paragraph2}</p>
+                    <p className="leading-relaxed">{paragraph3}</p>
+                  </div>
+                </div>
+              </section>
+            );
+          };
+        
+          const ShopSection = () => {
+            const { title, subtitle } = content[language].sections.shop;
+            return (
+              <section id="shop-section" className="py-24 bg-gray-100 text-gray-800 font-sans" dir={dir}>
+                <div className="container mx-auto px-4">
+                  <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold text-red-500 mb-4">{title}</h2>
+                    <p className="text-xl text-gray-600">{subtitle}</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    {content[language].productData.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
+                </div>
+              </section>
+            );
+          };
+        
+          const ContactSection = () => {
+            const { title, subtitle, nameLabel, emailLabel, messageLabel, sendButton } = content[language].sections.contact;
+            return (
+              <section id="contact-section" className="py-24 bg-white text-gray-800 font-sans" dir={dir}>
+                <div className="container mx-auto px-4 max-w-2xl">
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl md:text-5xl font-bold text-red-500 mb-4">{title}</h2>
+                    <p className="text-xl text-gray-600">{subtitle}</p>
+                  </div>
+                  <form className="bg-gray-100 p-8 md:p-12 rounded-xl shadow-xl border border-gray-200">
+                    <div className="mb-6">
+                      <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">{nameLabel}</label>
+                      <input type="text" id="name" name="name" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" />
+                    </div>
+                    <div className="mb-6">
+                      <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">{emailLabel}</label>
+                      <input type="email" id="email" name="email" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow" />
+                    </div>
+                    <div className="mb-6">
+                      <label htmlFor="message" className="block text-gray-700 font-semibold mb-2">{messageLabel}</label>
+                      <textarea id="message" name="message" rows="5" className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-shadow"></textarea>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full bg-gray-900 text-white font-bold text-lg px-8 py-3 rounded-lg shadow-lg hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
+                    >
+                      {sendButton}
+                    </button>
+                  </form>
+                </div>
+              </section>
+            );
+          };
+          
+          const Footer = () => {
+            return (
+              <footer className="bg-gray-900 text-gray-400 font-sans" dir={dir}>
+                <div className="container mx-auto p-8 text-center">
+                  <div className="flex justify-center space-x-6 mb-4">
+                    <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-red-500 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                    </a>
+                    <a href="#" aria-label="Facebook" className="text-gray-500 hover:text-red-500 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="#" aria-label="Twitter" className="text-gray-500 hover:text-red-500 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c-.6.4-1.4.2-2.3.6S16.5 8.7 16 9c-.6.3-1.4 1-2.3 1.4-1 .4-2 .2-2.8.8-1 .7-1.4 1.8-2 2.6-.6.8-1.5 1.5-2.2 2.2-.6.6-1.5 1-2.2 1.8-1 1-1.4 2-1.8 3.2-.2.6-.4 1.2-.6 1.8-.4 1-.8 1.8-1.4 2.6-.6.8-1.5 1.5-2.2 2.2-.6.6-1.5 1-2.2 1.8-1 1-1.4 2-1.8 3.2"></path></svg>
+                    </a>
+                  </div>
+                  <p className="text-sm">&copy; 2024 AC9. {language === 'ar' ? "جميع الحقوق محفوظة." : language === 'fr' ? "Tous droits réservés." : "All rights reserved."}</p>
+                </div>
+              </footer>
+            );
+          };
+        
+          return (
+            <div className="bg-white text-gray-800 min-h-screen">
+              <Header />
+              <main>
+                <HeroSection />
+                <AboutSection />
+                <ShopSection />
+                <ContactSection />
+              </main>
+              <Footer />
+            </div>
+          );
+        }
+
+        // Render the App component into the 'root' div
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        );
+    </script>
+</body>
+</html>
